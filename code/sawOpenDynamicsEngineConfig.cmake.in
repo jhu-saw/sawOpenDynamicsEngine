@@ -1,0 +1,4 @@
+
+set( sawOpenDynamicsEngine_INCLUDE_DIR "@sawOpenDynamicsEngine_INCLUDE_DIR@" )
+set( sawOpenDynamicsEngine_LIBRARY_DIR "@sawOpenDynamicsEngine_LIBRARY_DIR@" )
+set( sawOpenDynamicsEngine_LIBRARIES   "@sawOpenDynamicsEngine_LIBRARIES@" )
