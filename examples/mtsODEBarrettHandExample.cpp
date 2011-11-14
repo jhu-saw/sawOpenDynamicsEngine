@@ -72,7 +72,7 @@ int main(){
 			     Znear, Zfar );
   camera->Initialize();
 
-  std::string path( CISST_SOURCE_ROOT"/cisst/etc/cisstRobot/BH/" );
+  std::string path( CISST_SOURCE_ROOT"/etc/cisstRobot/BH/" );
   vctFrame4x4<double> Rtw0;
   Rtw0[2][3] = 0.1;
 

@@ -44,6 +44,7 @@ if( cisst_FOUND AND sawOpenSceneGraph_FOUND AND ODE_FOUND )
     )
 
   include_directories( 
+    ${CISST_INCLUDE_DIR}
     ${sawOpenSceneGraph_INCLUDE_DIRS}  
     ${ODE_INCLUDE_DIR} )
 

@@ -23,7 +23,7 @@ int main(){
   camera->Initialize();
 
   // Create objects
-  std::string path( CISST_SOURCE_ROOT"/libs/etc/cisstRobot/" );
+  std::string path( CISST_SOURCE_ROOT"/etc/cisstRobot/" );
 
   // Create a rigid body. Make up some mass + com + moit
   double mass = 1.0;

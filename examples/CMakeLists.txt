@@ -33,6 +33,7 @@ if( cisst_FOUND_AS_REQUIRED AND sawOpenDynamicsEngine_FOUND )
 
   include_directories( ${sawOpenDynamicsEngine_INCLUDE_DIR} )
   link_directories( ${sawOpenDynamicsEngine_LIBRARY_DIR} )
+  set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCISST_ODE_SUPPORT -DdDOUBLE" )
 
   add_executable( osaODEBodyExample           osaODEBodyExample.cpp )
   add_executable( osaODEWAMExample            osaODEWAMExample.cpp )
