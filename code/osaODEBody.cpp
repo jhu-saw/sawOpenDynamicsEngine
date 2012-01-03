@@ -25,23 +25,23 @@ osaODEBody::osaODEBody( const std::string& model,
   VertexCount( 0 ),
   Indices( NULL ),
   IndexCount( 0 ){
-    this->scale = scale;
-    Initialize( Rtwb );
-    
+  this->scale = scale;
+  Initialize( Rtwb );
+  
 }
 
 osaODEBody::osaODEBody( const std::string& model,
-			    osaODEWorld* odeworld,
-			    const vctFrm3& Rtwb,
-			    double scale,
-                            const std::string& options,
-			    osaOSGWorld* osgworld ):
+			osaODEWorld* odeworld,
+			const vctFrm3& Rtwb,
+			double scale,
+			const std::string& options,
+			osaOSGWorld* osgworld ):
 			    
   osaOSGBody( model, 
-		(osgworld == NULL) ? odeworld : osgworld, 
-		Rtwb,
-		scale,
-		options ),
+	      (osgworld == NULL) ? odeworld : osgworld, 
+	      Rtwb,
+	      scale,
+	      options ),
   odeworld( odeworld ),
   bodyid( 0 ),
   mass( NULL ),
@@ -65,18 +65,18 @@ osaODEBody::osaODEBody( const std::string& model,
 
 
 osaODEBody::osaODEBody( const std::string& model,
-			    osaODEWorld* odeworld, 
-			    const vctFrame4x4<double>& Rtwb,
-			    double m,
-			    double scale,
-                            const std::string& options,
-			    osaOSGWorld* osgworld ):
-
+			osaODEWorld* odeworld, 
+			const vctFrame4x4<double>& Rtwb,
+			double m,
+			double scale,
+			const std::string& options,
+			osaOSGWorld* osgworld ):
+  
   osaOSGBody( model, 
-		(osgworld == NULL) ? odeworld : osgworld,
-		Rtwb,
-		scale,
-		options ),
+	      (osgworld == NULL) ? odeworld : osgworld,
+	      Rtwb,
+	      scale,
+	      options ),
   odeworld( odeworld ),
   bodyid( 0 ),
   mass( NULL ),
@@ -102,10 +102,10 @@ osaODEBody::osaODEBody( const std::string& model,
 			    osaOSGWorld* osgworld ):
 
   osaOSGBody( model, 
-		(osgworld == NULL) ? odeworld : osgworld, 
-		Rtwb,
-		scale,
-		options ),
+	      (osgworld == NULL) ? odeworld : osgworld, 
+	      Rtwb,
+	      scale,
+	      options ),
   odeworld( odeworld ),
   bodyid( 0 ),
   mass( NULL ),
@@ -131,20 +131,20 @@ osaODEBody::osaODEBody( const std::string& model,
 
 
 osaODEBody::osaODEBody( const std::string& model,
-			    osaODEWorld* odeworld, 
-			    const vctFrame4x4<double>& Rtwb,
-			    double m,
-			    const vctFixedSizeVector<double,3>& tbcom,
-			    const vctFixedSizeMatrix<double,3,3>& moit,
-			    double scale,
-                            const std::string& options,
-			    osaOSGWorld* osgworld ) :
-
+			osaODEWorld* odeworld, 
+			const vctFrame4x4<double>& Rtwb,
+			double m,
+			const vctFixedSizeVector<double,3>& tbcom,
+			const vctFixedSizeMatrix<double,3,3>& moit,
+			double scale,
+			const std::string& options,
+			osaOSGWorld* osgworld ) :
+  
   osaOSGBody( model, 
-		(osgworld == NULL) ? odeworld : osgworld,
-		Rtwb,
-		scale,
-		options ),
+	      (osgworld == NULL) ? odeworld : osgworld,
+	      Rtwb,
+	      scale,
+	      options ),
   odeworld( odeworld ),
   bodyid( 0 ),
   mass( NULL ),
@@ -161,19 +161,19 @@ osaODEBody::osaODEBody( const std::string& model,
 
 
 osaODEBody::osaODEBody( const std::string& model,
-			    osaODEWorld* odeworld, 
-			    const vctFrm3& Rtwb,
-			    double m,
-			    const vctFixedSizeVector<double,3>& tbcom,
-			    const vctFixedSizeMatrix<double,3,3>& moit,
-			    double scale,
-                            const std::string& options,
-			    osaOSGWorld* osgworld ):
+			osaODEWorld* odeworld, 
+			const vctFrm3& Rtwb,
+			double m,
+			const vctFixedSizeVector<double,3>& tbcom,
+			const vctFixedSizeMatrix<double,3,3>& moit,
+			double scale,
+			const std::string& options,
+			osaOSGWorld* osgworld ):
   osaOSGBody( model, 
-		(osgworld == NULL) ? odeworld : osgworld,
-		Rtwb,
-		scale,
-		options ),
+	      (osgworld == NULL) ? odeworld : osgworld,
+	      Rtwb,
+	      scale,
+	      options ),
   odeworld( odeworld ),
   bodyid( 0 ),
   mass( NULL ),
@@ -184,7 +184,7 @@ osaODEBody::osaODEBody( const std::string& model,
   IndexCount( 0 ){
    
   this->scale = scale;
- // Hack to avoid non-normalized rotations!
+  // Hack to avoid non-normalized rotations!
   const vctMatrixRotation3<double>& Rwb = Rtwb.Rotation();
   vctQuaternionRotation3<double> qwb( Rwb, VCT_NORMALIZE );
   vctFixedSizeVector<double,3> twb( Rtwb.Translation() );
@@ -226,9 +226,9 @@ void osaODEBody::Initialize( const vctFrame4x4<double>& Rtwb ){
 }
 
 void osaODEBody::Initialize( const vctFrame4x4<double>& Rtwb,
-			       double m,
-			       const vctFixedSizeVector<double,3>& tbcom,
-			       const vctFixedSizeMatrix<double,3,3>& moit ){
+			     double m,
+			     const vctFixedSizeVector<double,3>& tbcom,
+			     const vctFixedSizeMatrix<double,3,3>& moit ){
 
   if( odeworld != NULL ){
 
@@ -282,19 +282,19 @@ void osaODEBody::Initialize( const vctFrame4x4<double>& Rtwb,
 }
 
 void osaODEBody::BuildODETriMesh( const vctFixedSizeVector<double,3>& com ){
+  
+  //osaOSGBody::GeodeVisitor gvtmp; 
+  //this->accept( gvtmp ); 
 
-  osaOSGBody::GeodeVisitor gvtmp; 
-  this->accept( gvtmp ); 
-  
-  if( 200 < gvtmp.geodetriangles.size() ){ 
-    double ratio = 200.0 / ( (double) gvtmp.geodetriangles.size() ); 
-    osgUtil::Simplifier simplifier( ratio, 4.0 ); 
-    this->accept( simplifier ); 
-  } 
-  
+  //if( 1000 < gvtmp.geodetriangles.size() ){ 
+  //double ratio = 100.0 / ( (double) gvtmp.geodetriangles.size() ); 
+  //osgUtil::Simplifier simplifier( ratio, 0.001 ); 
+  //this->accept( simplifier ); 
+  //} 
+
   osaOSGBody::GeodeVisitor gv;
   this->accept( gv );
-
+  
   // Create the array for ODE and copy the data
   VertexCount =  gv.geodetriangles.size()*3;  // 3 vertex per triangle
   Vertices  = new dVector3[ VertexCount ];    // create the vertices vector
@@ -304,7 +304,6 @@ void osaODEBody::BuildODETriMesh( const vctFixedSizeVector<double,3>& com ){
   // copy the data
   // ti: triangle index
   // vi: vertex index
-
   for( size_t ti=0, vi=0; ti<gv.geodetriangles.size(); ti++ ){
 
     // copy the vertices
@@ -348,7 +347,7 @@ void osaODEBody::BuildODETriMesh( const vctFixedSizeVector<double,3>& com ){
     dGeomSetBody( GetGeomID(), GetBodyID() );
   
   }
-
+  
 }
 
 void osaODEBody::Enable(){ 

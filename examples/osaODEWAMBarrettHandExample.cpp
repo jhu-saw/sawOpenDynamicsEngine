@@ -10,7 +10,7 @@ int main(){
   cmnLogger::SetMaskDefaultLog( CMN_LOG_ALLOW_ALL );
 
   // Create the OSG World
-  osaODEWorld* world = new osaODEWorld( 0.0005 );
+  osaODEWorld* world = new osaODEWorld( 0.00001 );
 
   // Create a camera
   int x = 0, y = 0;
@@ -51,16 +51,17 @@ int main(){
 
   osg::ref_ptr<osaODEManipulator> wam;
   wam = new osaODEManipulator( wammodels,
-				 world,
-				 vctFrame4x4<double>(),
-				 wampath + "wam7.rob",
-				 wampath + "l0.obj",
-				 vctDynamicVector<double>( 7, 0.0 ) );
-    
+			       world,
+			       vctFrame4x4<double>(),
+			       wampath + "wam7.rob",
+			       wampath + "l0.obj",
+			       vctDynamicVector<double>( 7, 0.0 ) );
+  
 
-  std::string bhpath( CISST_SOURCE_ROOT"/cisst/etc/cisstRobot/BH/" );
+  std::string bhpath( CISST_SOURCE_ROOT"/etc/cisstRobot/BH/" );
   vctFrame4x4<double> Rtw0 = wam->ForwardKinematics( vctDynamicVector<double>( 7, 0.0 ) );
   osg::ref_ptr<osaODEBarrettHand> bh;
+  
   bh = new osaODEBarrettHand( bhpath + "l0.obj",
 			      bhpath + "l1.obj",
 			      bhpath + "l2.obj",
@@ -69,9 +70,8 @@ int main(){
 			      Rtw0,
 			      bhpath + "f1f2.rob",
 			      bhpath + "f3.rob" );
-  
   wam->Attach( bh.get() );
-
+  
   std::cout << "ESC to quit" << std::endl;
 
   vctDynamicVector<double> qwam( 7, 0.0 );
@@ -79,8 +79,8 @@ int main(){
 
   while( !camera->done() ){
 
-    for( size_t i=0; i<7; i++ ) qwam[i] += 0.002;
-    for( size_t i=0; i<4; i++ ) qbh[i] += 0.002;
+    for( size_t i=0; i<7; i++ ) qwam[i] += 0.00005;
+    for( size_t i=0; i<4; i++ ) qbh[i] += 0.00005;
     wam->SetPositions( qwam );
     bh->SetPositions( qbh );
     world->Step();

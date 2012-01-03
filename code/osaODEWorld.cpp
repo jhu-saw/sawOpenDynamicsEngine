@@ -156,12 +156,10 @@ static void space_collision(void *argv, dGeomID o1, dGeomID o2){
     
     // dAreConnected doesn't like if both bodies are "zero" (that is if both
     // geoms are non-placeable
-    world->Collision( o1, o2 ); 
-
+    //world->Collision( o1, o2 ); 
     if( b1 != 0 && b2 != 0 ) {
-      if( dAreConnected( b1, b2 ) == 0 ){
-	world->Collision( o1, o2 ); 
-      }
+      if( dAreConnected( b1, b2 ) == 0 )
+	{ world->Collision( o1, o2 ); }
     }
     else{ world->Collision( o1, o2 ); }
   }

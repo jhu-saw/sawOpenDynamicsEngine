@@ -22,7 +22,7 @@ osaODEBarrettHand::osaODEBarrettHand( const std::string& palmmodel,
   vctFrame4x4<double> Rt0b( vctMatrixRotation3<double>(),
 			    vctFixedSizeVector<double,3>( 0.0, 0.0, 0.091 ) );
   vctFrame4x4<double> Rtwb = Rtw0 * Rt0b;
-  
+
   // Create the body for the base (palm)
   osg::ref_ptr<osaODEBody> odebase = NULL;
   odebase = new osaODEBody( palmmodel,               // geometry
@@ -49,18 +49,18 @@ osaODEBarrettHand::osaODEBarrettHand( const std::string& palmmodel,
 
 
   f1 = new osaODEManipulator( modelsf1f2,
-				world,
-				Rtwb*Rtbf1,
-				f1f2filename,
-				odebase.get(),
-				vctDynamicVector<double>( 3, 0.0 ) );
+			      world,
+			      Rtwb*Rtbf1,
+			      f1f2filename,
+			      odebase.get(),
+			      vctDynamicVector<double>( 3, 0.0 ) );
   f2 = new osaODEManipulator( modelsf1f2,
-				world,
-				Rtwb*Rtbf2,
-				f1f2filename,
-				odebase.get(),
-				vctDynamicVector<double>( 3, 0.0 ) );
-
+			      world,
+			      Rtwb*Rtbf2,
+			      f1f2filename,
+			      odebase.get(),
+			      vctDynamicVector<double>( 3, 0.0 ) );
+  
   std::vector<std::string> modelsf3;
   modelsf3.push_back( proximalmodel );
   modelsf3.push_back( intermediatemodel );
@@ -69,13 +69,13 @@ osaODEBarrettHand::osaODEBarrettHand( const std::string& palmmodel,
 							 0.0, 1.0, 0.0 ),
 			     vctFixedSizeVector<double,3>( 0.05, 0.0,0.0 ) );
 
-
+  
   f3 = new osaODEManipulator( modelsf3,
-				world,
-				Rtwb*Rtbf3,
-				f3filename,
-				odebase.get(),
-				vctDynamicVector<double>( 2, 0.0 ) );
+			      world,
+			      Rtwb*Rtbf3,
+			      f3filename,
+			      odebase.get(),
+			      vctDynamicVector<double>( 2, 0.0 ) );
 
   world->addChild( this );
 }

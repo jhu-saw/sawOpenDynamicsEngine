@@ -18,11 +18,11 @@ http://www.cisst.org/cisst/license.txt.
 #include <sawOpenDynamicsEngine/osaODEManipulator.h>
 
 osaODEManipulator::osaODEManipulator(const std::vector<std::string>& models,
-					 osaODEWorld* odeworld,
-					 const vctFrame4x4<double>& Rtw0,
-					 const std::string& robotfilename,
-					 const std::string& basemodel,
-					 const vctDynamicVector<double>& qinit):
+				     osaODEWorld* odeworld,
+				     const vctFrame4x4<double>& Rtw0,
+				     const std::string& robotfilename,
+				     const std::string& basemodel,
+				     const vctDynamicVector<double>& qinit):
   osaOSGManipulator( Rtw0, robotfilename ),
   odeworld( odeworld ),
   qinit( qinit ){
@@ -36,11 +36,11 @@ osaODEManipulator::osaODEManipulator(const std::vector<std::string>& models,
 
 
 osaODEManipulator::osaODEManipulator(const std::vector<std::string>& models,
-					 osaODEWorld* odeworld,
-					 const vctFrm3& Rtw0,
-					 const std::string& robotfilename,
-					 const std::string& basemodel,
-					 const vctDynamicVector<double>& qinit):
+				     osaODEWorld* odeworld,
+				     const vctFrm3& Rtw0,
+				     const std::string& robotfilename,
+				     const std::string& basemodel,
+				     const vctDynamicVector<double>& qinit):
   osaOSGManipulator( Rtw0, robotfilename ),
   odeworld( odeworld ),
   qinit( qinit ){
@@ -53,11 +53,11 @@ osaODEManipulator::osaODEManipulator(const std::vector<std::string>& models,
 }
 
 osaODEManipulator::osaODEManipulator(const std::vector<std::string>& models,
-					 osaODEWorld* odeworld,
-					 const vctFrame4x4<double>& Rtw0,
-					 const std::string& robotfilename,
-					 osaODEBody* base,
-					 const vctDynamicVector<double>& qinit):
+				     osaODEWorld* odeworld,
+				     const vctFrame4x4<double>& Rtw0,
+				     const std::string& robotfilename,
+				     osaODEBody* base,
+				     const vctDynamicVector<double>& qinit):
   osaOSGManipulator( Rtw0, robotfilename ),
   odeworld( odeworld ),
   qinit( qinit ){
@@ -72,11 +72,11 @@ osaODEManipulator::osaODEManipulator(const std::vector<std::string>& models,
 
 
 osaODEManipulator::osaODEManipulator(const std::vector<std::string>& models,
-					 osaODEWorld* odeworld,
-					 const vctFrm3& Rtw0,
-					 const std::string& robotfilename,
-					 osaODEBody* base,
-					 const vctDynamicVector<double>& qinit):
+				     osaODEWorld* odeworld,
+				     const vctFrm3& Rtw0,
+				     const std::string& robotfilename,
+				     osaODEBody* base,
+				     const vctDynamicVector<double>& qinit):
   osaOSGManipulator( Rtw0, robotfilename ),
   odeworld( odeworld ),
   qinit( qinit ){
@@ -95,22 +95,21 @@ osaODEManipulator::osaODEManipulator(const std::vector<std::string>& models,
 
 void 
 osaODEManipulator::CreateManipulator( const std::vector<std::string>& models,
-					const std::string& basemodel ){
-
-
+				      const std::string& basemodel ){
+  
   if( !basemodel.empty() ){ 
     osg::ref_ptr<osaODEBody> odebase = NULL;
 
     // create the base and add it to the manipulator
     odebase = new osaODEBody( basemodel, 
-				GetWorld(),
-				Rtw0, 
-				1.0,                                    // m   
-				vctFixedSizeVector<double,3>(0.0),      // com
-				vctFixedSizeMatrix<double,3,3>::Eye(),  // moit
-				1.0,
-				"",
-				(osaOSGWorld*)this );
+			      GetWorld(),
+			      Rtw0, 
+			      1.0,                                    // m   
+			      vctFixedSizeVector<double,3>(0.0),      // com
+			      vctFixedSizeMatrix<double,3,3>::Eye(),  // moit
+			      1.0,
+			      "",
+			      (osaOSGWorld*)this );
     
     // attach the base
     dJointID jid = dJointCreateFixed( GetWorldID(), 0 );
@@ -134,14 +133,14 @@ osaODEManipulator::CreateManipulator( const std::vector<std::string>& models,
     // create the links and add them to the link group       
     osg::ref_ptr<osaOSGBody> odeli;
     odeli = new osaODEBody( models[i-1],
-			      GetWorld(),
-			      Rtwi,
-			      links[i-1].Mass(),                       // m   
-			      links[i-1].CenterOfMass(),               // com
-			      links[i-1].MomentOfInertiaAtCOM(),       // I 
-			      1.0,
-			      "",
-			      (osaOSGWorld*)(osglinks.get()) );;
+			    GetWorld(),
+			    Rtwi,
+			    links[i-1].Mass(),                       // m   
+			    links[i-1].CenterOfMass(),               // com
+			    links[i-1].MomentOfInertiaAtCOM(),       // I 
+			    1.0,
+			    "",
+			    (osaOSGWorld*)(osglinks.get()) );;
   }
 
   // Initialize the joints
@@ -194,7 +193,7 @@ osaODEManipulator::CreateManipulator( const std::vector<std::string>& models,
 				    b1,             // the first body
 				    b2,             // the second body
 				    axis*sign,      // the Z axis 
-				    1,             // fudged values
+				    10,             // fudged values
 				    links[i].ForceTorqueMax(),
 				    type ) );
 
@@ -219,14 +218,14 @@ osaODEManipulator::CreateManipulator(const std::vector<std::string>& models){
     // create the links and add them to the link group       
     osg::ref_ptr<osaOSGBody> odeli;
     odeli = new osaODEBody( models[i-1],
-			      GetWorld(),
-			      Rtwi,
-			      links[i-1].Mass(),                       // m   
-			      links[i-1].CenterOfMass(),               // com
-			      links[i-1].MomentOfInertiaAtCOM(),       // I 
-			      1.0,
-			      "",
-			      (osaOSGWorld*)(osglinks.get()) );;
+			    GetWorld(),
+			    Rtwi,
+			    links[i-1].Mass(),                       // m   
+			    links[i-1].CenterOfMass(),               // com
+			    links[i-1].MomentOfInertiaAtCOM(),       // I 
+			    1.0,
+			    "",
+			    (osaOSGWorld*)(osglinks.get()) );;
   }
 
   // Initialize the joints
@@ -279,7 +278,7 @@ osaODEManipulator::CreateManipulator(const std::vector<std::string>& models){
 				    b1,             // the first body
 				    b2,             // the second body
 				    axis*sign,      // the Z axis 
-				    1,              // fudged values
+				    10,             // fudged values
 				    links[i].ForceTorqueMax(),
 				    type ) );
 

@@ -1,9 +1,11 @@
+#include <cisstCommon/cmnGetChar.h>
+
 #include <cisstMultiTask/mtsTaskManager.h>
 #include <cisstMultiTask/mtsTaskPeriodic.h>
 #include <cisstMultiTask/mtsInterfaceRequired.h>
 
-#include <sawOpenDynamicsEngine/osaODEWorld.h>
-#include <sawOpenSceneGraph/osaOSGMono.h>
+#include <sawOpenDynamicsEngine/mtsODEWorld.h>
+#include <sawOpenSceneGraph/mtsOSGMono.h>
 #include <sawOpenDynamicsEngine/mtsODEBarrettHand.h>
 
 class BHMotion : public mtsTaskPeriodic {
@@ -17,7 +19,7 @@ private:
 
 public:
 
-  BHMotion() : mtsTaskPeriodic( "BHMotion", 0.01, true ){
+  BHMotion() : mtsTaskPeriodic( "BHMotion", 0.001, true ){
 
     q.SetSize(4);
     q.SetAll(0.0);
@@ -59,18 +61,22 @@ int main(){
   cmnLogger::SetMaskFunction( CMN_LOG_ALLOW_ALL );
   cmnLogger::SetMaskDefaultLog( CMN_LOG_ALLOW_ALL );
 
-  osg::ref_ptr< osaODEWorld > world = new osaODEWorld(0.001);
+  osg::ref_ptr< mtsODEWorld > world = NULL;
+  world = new mtsODEWorld( "world", 0.0001, vctFixedSizeVector<double,3>(0.0) );
+  taskManager->AddComponent( world.get() );
   
   // Create a camera
   int x = 0, y = 0;
-  int width = 320, height = 240;
+  int width = 640, height = 480;
   double Znear = 0.1, Zfar = 10.0;
-  osg::ref_ptr< osaOSGCamera > camera;
-  camera = new osaOSGMono( world,
-			     x, y, width, height,
-			     55.0, ((double)width)/((double)height),
-			     Znear, Zfar );
-  camera->Initialize();
+  mtsOSGMono* camera;
+  camera = new mtsOSGMono( "camera",
+                           world,
+                           x, y,
+                           width, height,
+                           55.0, ((double)width)/((double)height),
+                           Znear, Zfar );
+  taskManager->AddComponent( camera );
 
   std::string path( CISST_SOURCE_ROOT"/etc/cisstRobot/BH/" );
   vctFrame4x4<double> Rtw0;
@@ -78,7 +84,7 @@ int main(){
 
   mtsODEBarrettHand* BH;
   BH = new mtsODEBarrettHand( "BH",
-			      0.01,
+			      0.001,
 			      OSA_CPU1,
 			      20,
 			      path + "l0.obj",
@@ -103,11 +109,9 @@ int main(){
   taskManager->StartAll();
   taskManager->WaitForStateAll( mtsComponentState::ACTIVE );
 
+  cmnGetChar();
   std::cout << "ESC to quit" << std::endl;
-  while( !camera->done() ){
-    world->Step();
-    camera->frame();
-  }
+  cmnGetChar();
 
   taskManager->KillAll();
   taskManager->Cleanup();

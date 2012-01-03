@@ -62,12 +62,13 @@ int main(){
   cmnLogger::SetMaskFunction( CMN_LOG_ALLOW_ALL );
   cmnLogger::SetMaskDefaultLog( CMN_LOG_ALLOW_ALL );
 
-  osg::ref_ptr< mtsODEWorld > world = new mtsODEWorld( "world", 0.001 );
+  osg::ref_ptr< mtsODEWorld > world = NULL;
+  world = new mtsODEWorld( "world", 0.00001 );
   taskManager->AddComponent( world.get() );
 
   // Create a camera
   int x = 0, y = 0;
-  int width = 320, height = 240;
+  int width = 640, height = 480;
   double Znear = 0.1, Zfar = 10.0;
   mtsOSGMono* camera;
   camera = new mtsOSGMono( "camera",
@@ -92,7 +93,7 @@ int main(){
 
   mtsODEManipulator* WAM;
   WAM = new mtsODEManipulator( "WAM",
-			       0.002,
+			       0.001,
 			       OSA_CPU1,
 			       20,
 			       models,
@@ -103,7 +104,7 @@ int main(){
 			       vctDynamicVector<double>( 7, 0.0 ) );
   taskManager->AddComponent( WAM );
   
-  WAMMotion motion( 0.002 );
+  WAMMotion motion( 0.001 );
   taskManager->AddComponent( &motion );
 
   taskManager->Connect( motion.GetName(), "Input",  WAM->GetName(), "Output" );
@@ -115,6 +116,7 @@ int main(){
   taskManager->StartAll();
   taskManager->WaitForStateAll( mtsComponentState::ACTIVE );
 
+  cmnGetChar();
   std::cout << "ENTER to quit" << std::endl;
   cmnGetChar();
 

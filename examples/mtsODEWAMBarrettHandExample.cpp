@@ -20,7 +20,7 @@ private:
 
 public:
 
-  WAMMotion() : mtsTaskPeriodic( "WAMMotion", 0.01, true ){
+  WAMMotion() : mtsTaskPeriodic( "WAMMotion", 0.001, true ){
 
     q.SetSize(7);
     q.SetAll(0.0);
@@ -65,7 +65,7 @@ private:
 
 public:
 
-  BHMotion() : mtsTaskPeriodic( "BHMotion", 0.01, true ){
+  BHMotion() : mtsTaskPeriodic( "BHMotion", 0.001, true ){
 
     q.SetSize(4);
     q.SetAll(0.0);
@@ -108,7 +108,7 @@ int main(){
   cmnLogger::SetMaskDefaultLog( CMN_LOG_ALLOW_ALL );
 
   // Create the OSG World
-  mtsODEWorld* world = new mtsODEWorld( "world", 0.0005 );
+  mtsODEWorld* world = new mtsODEWorld( "world", 0.00001 );
   taskManager->AddComponent( world );
 
   // Create a camera
@@ -152,7 +152,7 @@ int main(){
 
   mtsODEManipulator* WAM;
   WAM = new mtsODEManipulator( "WAM",
-			       0.01,
+			       0.001,
 			       OSA_CPU1,
 			       20,
 			       wammodels,
@@ -168,7 +168,7 @@ int main(){
   vctFrame4x4<double> Rtw0 = robwam.ForwardKinematics( vctDynamicVector<double>( 7, 0.0 ) );
   mtsODEBarrettHand* BH;
   BH = new mtsODEBarrettHand( "BH",
-			      0.01,
+			      0.001,
 			      OSA_CPU1,
 			      20,
 			      bhpath + "l0.obj",
@@ -201,6 +201,7 @@ int main(){
   taskManager->StartAll();
   taskManager->WaitForStateAll( mtsComponentState::ACTIVE );
 
+  cmnGetChar();
   std::cout << "ESC to quit" << std::endl;
   cmnGetChar();
 

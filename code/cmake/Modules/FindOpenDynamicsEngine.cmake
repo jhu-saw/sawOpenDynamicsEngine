@@ -4,7 +4,7 @@ if (WIN32)
   find_path( ODE_INCLUDE_DIR ode/ode.h 
     PATHS ENV ODE_ROOT_PATH PATH_SUFFIXES include )
 
-  find_library( ODE_LIBRARY NAMES ode ode_double 
+  find_library( ODE_LIBRARY NAMES ode 
     PATHS ENV ODE_ROOT_PATH PATH_SUFFIXES lib )
 
 else (WIN32)
@@ -15,7 +15,7 @@ else (WIN32)
   else (APPLE)
 
     find_path( ODE_INCLUDE_DIR ode/ode.h )
-    find_library( ODE_LIBRARY ode )
+    find_library( ODE_LIBRARY ode-double ode )
 
   endif (APPLE)
 

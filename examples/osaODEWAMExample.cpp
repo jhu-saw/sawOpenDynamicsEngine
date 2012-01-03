@@ -9,7 +9,7 @@ int main(){
   cmnLogger::SetMaskDefaultLog( CMN_LOG_ALLOW_ALL );
 
   // Create the OSG World
-  osaODEWorld* world = new osaODEWorld( 0.0005 );
+  osaODEWorld* world = new osaODEWorld( 0.00001 );
 
   // Create a camera
   int x = 0, y = 0;
@@ -17,9 +17,9 @@ int main(){
   double Znear = 0.01, Zfar = 10.0;
   osg::ref_ptr<osaOSGMono> camera;
   camera = new osaOSGMono( world,
-			     x, y, width, height,
-			     55, ((double)width)/((double)height),
-			     Znear, Zfar );
+			   x, y, width, height,
+			   55, ((double)width)/((double)height),
+			   Znear, Zfar );
   camera->Initialize();
 
   // Create objects
@@ -49,19 +49,18 @@ int main(){
 
   osg::ref_ptr<osaODEManipulator> wam;
   wam = new osaODEManipulator( models,
-				 world,
-				 vctFrame4x4<double>(),
-				 path + "WAM/wam7.rob",
-				 path + "WAM/l0.obj",
-				 vctDynamicVector<double>( 7, 0.0 ) );
-    
+			       world,
+			       vctFrame4x4<double>(),
+			       path + "WAM/wam7.rob",
+			       path + "WAM/l0.obj",
+			       vctDynamicVector<double>( 7, 0.0 ) );
   
   std::cout << "ESC to quit" << std::endl;
 
   vctDynamicVector<double> q( 7, 0.0 );
   while( !camera->done() ){
 
-    for( size_t i=0; i<7; i++ ) q[i] += 0.002;
+    for( size_t i=0; i<7; i++ ) q[i] += 0.00005;
     wam->SetPositions( q );
     world->Step();
     camera->frame();
