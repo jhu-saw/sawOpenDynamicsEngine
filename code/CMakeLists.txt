@@ -10,10 +10,12 @@ set(
   cisstRobot )
 
 find_package (cisst REQUIRED ${REQUIRED_CISST_LIBRARIES})
-find_package( sawOpenSceneGraph )
+find_package( sawOpenSceneGraph REQUIRED HINTS "${saw_BINARY_DIR}/components" )
 find_package( OpenDynamicsEngine )
 
 if( cisst_FOUND AND sawOpenSceneGraph_FOUND AND ODE_FOUND )
+
+  include( ${CISST_USE_FILE} )
 
   SET( 
     HEADER_FILES 
