@@ -103,7 +103,7 @@ class CISST_EXPORT osaODEWorld : public osaOSGWorld {
      while too few gives bad results (100 contacts points is actually quite 
      large)
   */
-  static const size_t NUM_CONTACTS = 20;
+  static const size_t NUM_CONTACTS = 50;
 
  protected:
   

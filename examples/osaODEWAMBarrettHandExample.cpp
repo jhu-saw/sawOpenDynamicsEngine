@@ -79,8 +79,8 @@ int main(){
 
   while( !camera->done() ){
 
-    for( size_t i=0; i<7; i++ ) qwam[i] += 0.00005;
-    for( size_t i=0; i<4; i++ ) qbh[i] += 0.00005;
+    for( size_t i=0; i<7; i++ ) qwam[i] += 0.005;
+    for( size_t i=0; i<4; i++ ) qbh[i] += 0.005;
     wam->SetPositions( qwam );
     bh->SetPositions( qbh );
     world->Step();

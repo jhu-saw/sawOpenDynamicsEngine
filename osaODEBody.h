@@ -75,6 +75,7 @@ class CISST_EXPORT osaODEBody : public osaOSGBody {
   vctDynamicMatrix<double> vctVertices;
   dTriIndex* Indices;
   int        IndexCount;
+  double simplify_ratio;
 
   //! The ODE space ID
   /**
@@ -114,11 +115,12 @@ class CISST_EXPORT osaODEBody : public osaOSGBody {
      \param osgworld An osg group to use. If NULL the root of odeworld is used
   */
   osaODEBody( const std::string& model,
-		osaODEWorld* odeworld,
-		const vctFrame4x4<double>& Rtwb,
-		double scale = 1.0,
-		const std::string& options = std::string(""),
-		osaOSGWorld* osgworld = NULL );
+	      osaODEWorld* odeworld,
+	      const vctFrame4x4<double>& Rtwb,
+	      double scale = 1.0,
+	      const std::string& options = std::string(""),
+	      osaOSGWorld* osgworld = NULL,
+	      double simplify_ratio = 0.0 );
 
 
   //! Constructor
@@ -132,11 +134,12 @@ class CISST_EXPORT osaODEBody : public osaOSGBody {
      \param osgworld An osg group to use. If NULL the root of odeworld is used
   */
   osaODEBody( const std::string& model,
-		osaODEWorld* odeworld,
-		const vctFrm3& Rtwb,
-		double scale = 1.0,
-		const std::string& options = std::string(""),
-		osaOSGWorld* osgworld = NULL );
+	      osaODEWorld* odeworld,
+	      const vctFrm3& Rtwb,
+	      double scale = 1.0,
+	      const std::string& options = std::string(""),
+	      osaOSGWorld* osgworld = NULL,
+	      double simplify_ratio = 0.0 );
 			
 
   //! Main constructor
@@ -159,7 +162,8 @@ class CISST_EXPORT osaODEBody : public osaOSGBody {
 		const vctFixedSizeMatrix<double,3,3>& moit,
 		double scale = 1.0,
 		const std::string& options = std::string(""),
-		osaOSGWorld* osgworld = NULL );
+		osaOSGWorld* osgworld = NULL,
+		double simplify_ratio = 0.0 );
 
   //! Main constructor
   /**
@@ -181,7 +185,8 @@ class CISST_EXPORT osaODEBody : public osaOSGBody {
 		const vctFixedSizeMatrix<double,3,3>& moit,
 		double scale = 1.0,
 		const std::string& options = std::string(""),
-		osaOSGWorld* osgworld = NULL );
+		osaOSGWorld* osgworld = NULL,
+		double simplify_ratio = 0.0 );
 
   //! Main constructor
   /**
@@ -200,7 +205,8 @@ class CISST_EXPORT osaODEBody : public osaOSGBody {
 		double m,
 		double scale = 1.0,
 		const std::string& options = std::string(""),
-		osaOSGWorld* osgworld = NULL );
+		osaOSGWorld* osgworld = NULL,
+		double simplify_ratio = 0.0 );
   
   //! Main constructor
   /**
@@ -219,7 +225,8 @@ class CISST_EXPORT osaODEBody : public osaOSGBody {
 		double m,
 		double scale = 1.0,
 		const std::string& options = std::string(""),
-		osaOSGWorld* osgworld = NULL );
+		osaOSGWorld* osgworld = NULL,
+		double simplify_ratio = 0.0 );
   
 
   //! Default destructor

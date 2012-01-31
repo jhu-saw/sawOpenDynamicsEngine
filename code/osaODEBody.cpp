@@ -10,7 +10,8 @@ osaODEBody::osaODEBody( const std::string& model,
 			const vctFrame4x4<double>& Rtwb,
 			double scale,
 			const std::string& options,
-			osaOSGWorld* osgworld ):
+			osaOSGWorld* osgworld,
+			double simplify_ratio ):
 
   osaOSGBody( model, 
 		(osgworld == NULL) ? odeworld : osgworld, 
@@ -24,7 +25,8 @@ osaODEBody::osaODEBody( const std::string& model,
   Vertices( NULL ),
   VertexCount( 0 ),
   Indices( NULL ),
-  IndexCount( 0 ){
+  IndexCount( 0 ),
+  simplify_ratio( simplify_ratio ){
   this->scale = scale;
   Initialize( Rtwb );
   
@@ -35,7 +37,8 @@ osaODEBody::osaODEBody( const std::string& model,
 			const vctFrm3& Rtwb,
 			double scale,
 			const std::string& options,
-			osaOSGWorld* osgworld ):
+			osaOSGWorld* osgworld,
+			double simplify_ratio ):
 			    
   osaOSGBody( model, 
 	      (osgworld == NULL) ? odeworld : osgworld, 
@@ -49,7 +52,8 @@ osaODEBody::osaODEBody( const std::string& model,
   Vertices( NULL ),
   VertexCount( 0 ),
   Indices( NULL ),
-  IndexCount( 0 ){
+  IndexCount( 0 ),
+  simplify_ratio( simplify_ratio ){
   this->scale = scale;
 
   // Hack to avoid non-normalized rotations!
@@ -70,7 +74,8 @@ osaODEBody::osaODEBody( const std::string& model,
 			double m,
 			double scale,
 			const std::string& options,
-			osaOSGWorld* osgworld ):
+			osaOSGWorld* osgworld,
+			double simplify_ratio ):
   
   osaOSGBody( model, 
 	      (osgworld == NULL) ? odeworld : osgworld,
@@ -84,7 +89,8 @@ osaODEBody::osaODEBody( const std::string& model,
   Vertices( NULL ),
   VertexCount( 0 ),
   Indices( NULL ),
-  IndexCount( 0 ){
+  IndexCount( 0 ),
+  simplify_ratio( simplify_ratio ){
   this->scale = scale;
 
   vctFixedSizeVector<double,3> tbcom( 0.0 );
@@ -94,12 +100,13 @@ osaODEBody::osaODEBody( const std::string& model,
 }
 
 osaODEBody::osaODEBody( const std::string& model,
-			    osaODEWorld* odeworld, 
-			    const vctFrm3& Rtwb,
-			    double m,
-			    double scale,
-                            const std::string& options,
-			    osaOSGWorld* osgworld ):
+			osaODEWorld* odeworld, 
+			const vctFrm3& Rtwb,
+			double m,
+			double scale,
+			const std::string& options,
+			osaOSGWorld* osgworld,
+			double simplify_ratio ):
 
   osaOSGBody( model, 
 	      (osgworld == NULL) ? odeworld : osgworld, 
@@ -113,7 +120,8 @@ osaODEBody::osaODEBody( const std::string& model,
   Vertices( NULL ),
   VertexCount( 0 ),
   Indices( NULL ),
-  IndexCount( 0 ){
+  IndexCount( 0 ),
+  simplify_ratio( simplify_ratio ){
 
   this->scale = scale;
   vctFixedSizeVector<double,3> tbcom( 0.0 );
@@ -138,7 +146,8 @@ osaODEBody::osaODEBody( const std::string& model,
 			const vctFixedSizeMatrix<double,3,3>& moit,
 			double scale,
 			const std::string& options,
-			osaOSGWorld* osgworld ) :
+			osaOSGWorld* osgworld,
+			double simplify_ratio ) :
   
   osaOSGBody( model, 
 	      (osgworld == NULL) ? odeworld : osgworld,
@@ -152,7 +161,8 @@ osaODEBody::osaODEBody( const std::string& model,
   Vertices( NULL ),
   VertexCount( 0 ),
   Indices( NULL ),
-  IndexCount( 0 ){
+  IndexCount( 0 ),
+  simplify_ratio( simplify_ratio ){
 
   this->scale = scale;
   Initialize( Rtwb, m, tbcom, moit );
@@ -168,7 +178,8 @@ osaODEBody::osaODEBody( const std::string& model,
 			const vctFixedSizeMatrix<double,3,3>& moit,
 			double scale,
 			const std::string& options,
-			osaOSGWorld* osgworld ):
+			osaOSGWorld* osgworld,
+			double simplify_ratio ):
   osaOSGBody( model, 
 	      (osgworld == NULL) ? odeworld : osgworld,
 	      Rtwb,
@@ -181,7 +192,8 @@ osaODEBody::osaODEBody( const std::string& model,
   Vertices( NULL ),
   VertexCount( 0 ),
   Indices( NULL ),
-  IndexCount( 0 ){
+  IndexCount( 0 ),
+  simplify_ratio( simplify_ratio ){
    
   this->scale = scale;
   // Hack to avoid non-normalized rotations!
@@ -283,14 +295,14 @@ void osaODEBody::Initialize( const vctFrame4x4<double>& Rtwb,
 
 void osaODEBody::BuildODETriMesh( const vctFixedSizeVector<double,3>& com ){
   
-  //osaOSGBody::GeodeVisitor gvtmp; 
-  //this->accept( gvtmp ); 
+  std::cout << "simplifier: " << simplify_ratio << std::endl;
+  if( 0 < simplify_ratio ){
+    osaOSGBody::GeodeVisitor gvtmp; 
+    this->accept( gvtmp ); 
+    osgUtil::Simplifier simplifier( simplify_ratio, 0.001 ); 
+    this->accept( simplifier ); 
 
-  //if( 1000 < gvtmp.geodetriangles.size() ){ 
-  //double ratio = 100.0 / ( (double) gvtmp.geodetriangles.size() ); 
-  //osgUtil::Simplifier simplifier( ratio, 0.001 ); 
-  //this->accept( simplifier ); 
-  //} 
+  } 
 
   osaOSGBody::GeodeVisitor gv;
   this->accept( gv );
@@ -300,7 +312,7 @@ void osaODEBody::BuildODETriMesh( const vctFixedSizeVector<double,3>& com ){
   Vertices  = new dVector3[ VertexCount ];    // create the vertices vector
   IndexCount = gv.geodetriangles.size()*3;    // 3 vertex index per ttriangle
   Indices = new dTriIndex[ IndexCount ];
-
+  std::cout << "tri: " << IndexCount/3 << std::endl;
   // copy the data
   // ti: triangle index
   // vi: vertex index

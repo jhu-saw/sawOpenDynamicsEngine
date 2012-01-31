@@ -53,13 +53,4 @@ if( cisst_FOUND_AS_REQUIRED AND sawOpenDynamicsEngine_FOUND )
   target_link_libraries( mtsODEWAMBarrettHandExample sawOpenDynamicsEngine ) 
   target_link_libraries( mtsODEBarrettHandExample    sawOpenDynamicsEngine ) 
 
-  cisst_target_link_libraries( osaODEBodyExample           ${REQUIRED_CISST_LIBRARIES} ) 
-  cisst_target_link_libraries( osaODEWAMExample            ${REQUIRED_CISST_LIBRARIES} ) 
-  cisst_target_link_libraries( osaODEWAMBarrettHandExample ${REQUIRED_CISST_LIBRARIES} ) 
-  cisst_target_link_libraries( osaODEBarrettHandExample    ${REQUIRED_CISST_LIBRARIES} ) 
-
-  cisst_target_link_libraries( mtsODEWAMExample            ${REQUIRED_CISST_LIBRARIES} ) 
-  cisst_target_link_libraries( mtsODEWAMBarrettHandExample ${REQUIRED_CISST_LIBRARIES} ) 
-  cisst_target_link_libraries( mtsODEBarrettHandExample    ${REQUIRED_CISST_LIBRARIES} ) 
-
 endif( cisst_FOUND_AS_REQUIRED AND sawOpenDynamicsEngine_FOUND )
