@@ -25,32 +25,34 @@ set(
   cisstParameterTypes )
 
 find_package( cisst REQUIRED ${REQUIRED_CISST_LIBRARIES} )
-find_package( sawOpenDynamicsEngine REQUIRED HINTS "${saw_BINARY_DIR}/components" )
 
-if( cisst_FOUND_AS_REQUIRED AND sawOpenDynamicsEngine_FOUND )
+if( cisst_FOUND_AS_REQUIRED )
 
   include( ${CISST_USE_FILE} )
+  cisst_find_component( sawOpenDynamicsEngine REQUIRED )
 
-  include_directories( ${sawOpenDynamicsEngine_INCLUDE_DIR} )
-  link_directories( ${sawOpenDynamicsEngine_LIBRARY_DIR} )
-  set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCISST_ODE_SUPPORT -DdDOUBLE" )
+  if( sawOpenDynamicsEngine_FOUND )
+    include_directories( ${sawOpenDynamicsEngine_INCLUDE_DIR} )
+    link_directories( ${sawOpenDynamicsEngine_LIBRARY_DIR} )
+    set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCISST_ODE_SUPPORT -DdDOUBLE" )
 
-  add_executable( osaODEBodyExample           osaODEBodyExample.cpp )
-  add_executable( osaODEWAMExample            osaODEWAMExample.cpp )
-  add_executable( osaODEWAMBarrettHandExample osaODEWAMBarrettHandExample.cpp )
-  add_executable( osaODEBarrettHandExample    osaODEBarrettHandExample.cpp )
+    add_executable( osaODEBodyExample           osaODEBodyExample.cpp )
+    add_executable( osaODEWAMExample            osaODEWAMExample.cpp )
+    add_executable( osaODEWAMBarrettHandExample osaODEWAMBarrettHandExample.cpp )
+    add_executable( osaODEBarrettHandExample    osaODEBarrettHandExample.cpp )
 
-  add_executable( mtsODEWAMExample            mtsODEWAMExample.cpp )
-  add_executable( mtsODEWAMBarrettHandExample mtsODEWAMBarrettHandExample.cpp )
-  add_executable( mtsODEBarrettHandExample    mtsODEBarrettHandExample.cpp )
+    add_executable( mtsODEWAMExample            mtsODEWAMExample.cpp )
+    add_executable( mtsODEWAMBarrettHandExample mtsODEWAMBarrettHandExample.cpp )
+    add_executable( mtsODEBarrettHandExample    mtsODEBarrettHandExample.cpp )
 
-  target_link_libraries( osaODEBodyExample           sawOpenDynamicsEngine ) 
-  target_link_libraries( osaODEWAMExample            sawOpenDynamicsEngine ) 
-  target_link_libraries( osaODEWAMBarrettHandExample sawOpenDynamicsEngine ) 
-  target_link_libraries( osaODEBarrettHandExample    sawOpenDynamicsEngine ) 
+    target_link_libraries( osaODEBodyExample           sawOpenDynamicsEngine ) 
+    target_link_libraries( osaODEWAMExample            sawOpenDynamicsEngine ) 
+    target_link_libraries( osaODEWAMBarrettHandExample sawOpenDynamicsEngine ) 
+    target_link_libraries( osaODEBarrettHandExample    sawOpenDynamicsEngine ) 
 
-  target_link_libraries( mtsODEWAMExample            sawOpenDynamicsEngine ) 
-  target_link_libraries( mtsODEWAMBarrettHandExample sawOpenDynamicsEngine ) 
-  target_link_libraries( mtsODEBarrettHandExample    sawOpenDynamicsEngine ) 
+    target_link_libraries( mtsODEWAMExample            sawOpenDynamicsEngine ) 
+    target_link_libraries( mtsODEWAMBarrettHandExample sawOpenDynamicsEngine ) 
+    target_link_libraries( mtsODEBarrettHandExample    sawOpenDynamicsEngine ) 
 
+  endif( sawOpenDynamicsEngine_FOUND)
 endif( cisst_FOUND_AS_REQUIRED AND sawOpenDynamicsEngine_FOUND )

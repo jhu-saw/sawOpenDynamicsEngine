@@ -1,3 +1,16 @@
+#
+# $Id$
+#
+# (C) Copyright 2012 Johns Hopkins University (JHU), All Rights
+# Reserved.
+#
+# --- begin cisst license - do not edit ---
+# 
+# This software is provided "as is" under an open source license, with
+# no warranty.  The complete license can be found in license.txt and
+# http://www.cisst.org/cisst/license.txt.
+# 
+# --- end cisst license ---
 
 set( 
   REQUIRED_CISST_LIBRARIES
@@ -9,59 +22,61 @@ set(
   cisstParameterTypes
   cisstRobot )
 
-find_package (cisst REQUIRED ${REQUIRED_CISST_LIBRARIES})
-find_package( sawOpenSceneGraph REQUIRED HINTS "${saw_BINARY_DIR}/components" )
+find_package( cisst REQUIRED ${REQUIRED_CISST_LIBRARIES} )
 find_package( OpenDynamicsEngine )
 
-if( cisst_FOUND AND sawOpenSceneGraph_FOUND AND ODE_FOUND )
+if( cisst_FOUND AND ODE_FOUND )
 
   include( ${CISST_USE_FILE} )
+  cisst_find_component( sawOpenSceneGraph REQUIRED  )
 
-  SET( 
-    HEADER_FILES 
-    ../osaODEBarrettHand.h
-    ../osaODEBody.h
-    ../osaODEJoint.h
-    ../osaODEManipulator.h
-    ../osaODEServoMotor.h
-    ../osaODEWorld.h
+  if( sawOpenSceneGraph_FOUND )
 
-    ../mtsODEManipulatorTask.h
-    ../mtsODEWorld.h
+    SET( 
+      HEADER_FILES 
+      ../osaODEBarrettHand.h
+      ../osaODEBody.h
+      ../osaODEJoint.h
+      ../osaODEManipulator.h
+      ../osaODEServoMotor.h
+      ../osaODEWorld.h
 
-    ../mtsODEManipulator.h
-    ../mtsODEBarrettHand.h
-    )
-    
-  SET(
-    SOURCE_FILES
-    osaODEBarrettHand.cpp
-    osaODEBody.cpp
-    osaODEJoint.cpp
-    osaODEManipulator.cpp
-    osaODEServoMotor.cpp
-    osaODEWorld.cpp
+      ../mtsODEManipulatorTask.h
+      ../mtsODEWorld.h
 
-    mtsODEManipulatorTask.cpp
-    )
+      ../mtsODEManipulator.h
+      ../mtsODEBarrettHand.h
+      )
 
-  include_directories( 
-    ${CISST_INCLUDE_DIR}
-    ${sawOpenSceneGraph_INCLUDE_DIRS}  
-    ${ODE_INCLUDE_DIR} )
+    SET(
+      SOURCE_FILES
+      osaODEBarrettHand.cpp
+      osaODEBody.cpp
+      osaODEJoint.cpp
+      osaODEManipulator.cpp
+      osaODEServoMotor.cpp
+      osaODEWorld.cpp
 
-  add_library( sawOpenDynamicsEngine ${HEADER_FILES} ${SOURCE_FILES} )
+      mtsODEManipulatorTask.cpp
+      )
 
-  set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCISST_ODE_SUPPORT -DdDOUBLE" )
+    include_directories( 
+      ${CISST_INCLUDE_DIR}
+      ${sawOpenSceneGraph_INCLUDE_DIRS}  
+      ${ODE_INCLUDE_DIR} )
 
-  target_link_libraries(
-    sawOpenDynamicsEngine 
-    ${ODE_LIBRARY} 
-    ${sawOpenSceneGraph_LIBRARIES} )
+    add_library( sawOpenDynamicsEngine ${HEADER_FILES} ${SOURCE_FILES} )
 
-  cisst_target_link_libraries( 
-    sawOpenDynamicsEngine 
-    ${REQUIRED_CISST_LIBRARIES} )
+    set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCISST_ODE_SUPPORT -DdDOUBLE" )
+
+    target_link_libraries(
+      sawOpenDynamicsEngine 
+      ${ODE_LIBRARY} 
+      ${sawOpenSceneGraph_LIBRARIES} )
+
+    cisst_target_link_libraries( 
+      sawOpenDynamicsEngine 
+      ${REQUIRED_CISST_LIBRARIES} )
 
 
     set( 
@@ -78,7 +93,19 @@ if( cisst_FOUND AND sawOpenSceneGraph_FOUND AND ODE_FOUND )
       "${sawComponents_BINARY_DIR}/sawOpenDynamicsEngineConfig.cmake"
       @ONLY@)
 
+    # Install target for headers and library
+    install (FILES ${HEADER_FILES}
+      DESTINATION include/sawOpenDynamicsEngine)
 
-endif( cisst_FOUND AND sawOpenSceneGraph_FOUND AND ODE_FOUND )
+    install (TARGETS sawOpenDynamicsEngine
+      RUNTIME DESTINATION bin
+      LIBRARY DESTINATION lib
+      ARCHIVE DESTINATION lib)
+
+    install (FILES "${sawComponents_BINARY_DIR}/sawOpenDynamicsEngineConfig.cmake"
+      DESTINATION ${CISST_CMAKE_MODULES_INSTALL_SUFFIX}/components)
+
+  endif( sawOpenSceneGraph_FOUND )
+endif( cisst_FOUND AND ODE_FOUND )
 
 
