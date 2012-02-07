@@ -1,3 +1,17 @@
+#
+# $Id$
+#
+# (C) Copyright 2012 Johns Hopkins University (JHU), All Rights
+# Reserved.
+#
+# --- begin cisst license - do not edit ---
+#
+# This software is provided "as is" under an open source license, with
+# no warranty.  The complete license can be found in license.txt and
+# http://www.cisst.org/cisst/license.txt.
+#
+# --- end cisst license ---
+
 cmake_minimum_required(VERSION 2.6.0)
 
 if (WIN32)
@@ -27,11 +41,15 @@ endif ()
 
 set( ODE_FOUND FALSE )
 
-if( ODE_INCLUDE_DIR ) 
-  if( ODE_LIBRARY )
+if( ODE_INCLUDE_DIR and ODE_LIBRARY ) 
     set( ODE_FOUND TRUE )
-  endif( ODE_LIBRARY )
-endif( ODE_INCLUDE_DIR )
+
+    # deprecate old variables so that we conform to standard variable naming for Find*.cmake
+    set( OpenDynamicsEngine_FOUND True )
+    set( OpenDynamicsEngine_LIBRARIES ${ODE_LIBRARY} )
+    set( OpenDynamicsEngine_INCLUDE_DIRS ${ODE_INCLUDE_DIR} )
+
+endif()
 
 mark_as_advanced( ODE_INCLUDE_DIR ODE_LIBRARY )
 

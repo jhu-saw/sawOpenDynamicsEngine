@@ -32,8 +32,7 @@ if( cisst_FOUND AND ODE_FOUND )
 
   if( sawOpenSceneGraph_FOUND )
 
-    SET( 
-      HEADER_FILES 
+    SET( HEADER_FILES 
       ../osaODEBarrettHand.h
       ../osaODEBody.h
       ../osaODEJoint.h
@@ -48,8 +47,7 @@ if( cisst_FOUND AND ODE_FOUND )
       ../mtsODEBarrettHand.h
       )
 
-    SET(
-      SOURCE_FILES
+    SET( SOURCE_FILES
       osaODEBarrettHand.cpp
       osaODEBody.cpp
       osaODEJoint.cpp
@@ -61,29 +59,28 @@ if( cisst_FOUND AND ODE_FOUND )
       )
 
     include_directories( 
-      ${CISST_INCLUDE_DIR}
       ${sawOpenSceneGraph_INCLUDE_DIRS}  
-      ${ODE_INCLUDE_DIR} )
+      ${OpenDynamicsEngine_INCLUDE_DIRS} )
 
-    add_library( sawOpenDynamicsEngine ${HEADER_FILES} ${SOURCE_FILES} )
+    add_library( sawOpenDynamicsEngine ${SOURCE_FILES} )
 
-    set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCISST_ODE_SUPPORT -DdDOUBLE" )
+    # TODO: Are these flags necessary? they don't appear anywhere in the CISST/SAW source
+    # set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCISST_ODE_SUPPORT -DdDOUBLE" )
 
     target_link_libraries(
       sawOpenDynamicsEngine 
-      ${ODE_LIBRARY} 
+      ${OpenDynamicsEngine_LIBRARIES} 
       ${sawOpenSceneGraph_LIBRARIES} )
 
     cisst_target_link_libraries( 
       sawOpenDynamicsEngine 
       ${REQUIRED_CISST_LIBRARIES} )
 
-
     set( 
       sawOpenDynamicsEngine_INCLUDE_DIR 
-      "${sawComponents_SOURCE_DIR}" 
-      "${sawComponents_BINARY_DIR}"
-      ${ODE_INCLUDE_DIRS} )
+      ${sawComponents_SOURCE_DIR} 
+      ${sawComponents_BINARY_DIR}
+      ${OpenDynamicsEngine_INCLUDE_DIRS} )
 
     set(sawOpenDynamicsEngine_LIBRARY_DIR "${LIBRARY_OUTPUT_PATH}")
     set(sawOpenDynamicsEngine_LIBRARIES sawOpenDynamicsEngine ${sawOpenSceneGraph_LIBRARIES} )
@@ -102,8 +99,12 @@ if( cisst_FOUND AND ODE_FOUND )
       LIBRARY DESTINATION lib
       ARCHIVE DESTINATION lib)
 
+    # Install cmake files for finding ODE and sawODE
     install (FILES "${sawComponents_BINARY_DIR}/sawOpenDynamicsEngineConfig.cmake"
       DESTINATION ${CISST_CMAKE_MODULES_INSTALL_SUFFIX}/components)
+
+    install (FILES "${sawOpenDynamicsEngine_SOURCE_DIR}/code/cmake/Modules/FindOpenDynamicsEngine.cmake"
+      DESTINATION ${CISST_CMAKE_MODULES_INSTALL_SUFFIX}/components/sawOpenDynamicsEngine)
 
   endif( sawOpenSceneGraph_FOUND )
 endif( cisst_FOUND AND ODE_FOUND )
