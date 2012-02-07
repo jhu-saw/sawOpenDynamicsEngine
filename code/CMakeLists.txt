@@ -104,7 +104,7 @@ if( cisst_FOUND AND ODE_FOUND )
       DESTINATION ${CISST_CMAKE_MODULES_INSTALL_SUFFIX}/components)
 
     install (FILES "${sawOpenDynamicsEngine_SOURCE_DIR}/code/cmake/Modules/FindOpenDynamicsEngine.cmake"
-      DESTINATION ${CISST_CMAKE_MODULES_INSTALL_SUFFIX}/components/sawOpenDynamicsEngine)
+      DESTINATION ${CISST_CMAKE_MODULES_INSTALL_SUFFIX})
 
   endif( sawOpenSceneGraph_FOUND )
 endif( cisst_FOUND AND ODE_FOUND )
