@@ -12,6 +12,8 @@
 # 
 # --- end cisst license ---
 
+project( sawOpenDynamicsEngine )
+
 # Need to add the module path to search for FindOpenDynamicsEngine.cmake
 set( 
   CMAKE_MODULE_PATH 
