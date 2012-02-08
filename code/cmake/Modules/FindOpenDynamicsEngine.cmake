@@ -41,14 +41,15 @@ endif ()
 
 set( ODE_FOUND FALSE )
 
-if( ODE_INCLUDE_DIR and ODE_LIBRARY ) 
+if( ODE_INCLUDE_DIR )
+  if( ODE_LIBRARY ) 
     set( ODE_FOUND TRUE )
 
     # deprecate old variables so that we conform to standard variable naming for Find*.cmake
     set( OpenDynamicsEngine_FOUND True )
     set( OpenDynamicsEngine_LIBRARIES ${ODE_LIBRARY} )
     set( OpenDynamicsEngine_INCLUDE_DIRS ${ODE_INCLUDE_DIR} )
-
+  endif()
 endif()
 
 mark_as_advanced( ODE_INCLUDE_DIR ODE_LIBRARY )
