@@ -45,6 +45,8 @@ if( cisst_FOUND AND ODE_FOUND )
 
       ../mtsODEManipulator.h
       ../mtsODEBarrettHand.h
+
+      ../sawOpenDynamicsEngineExport.h
       )
 
     SET( SOURCE_FILES
