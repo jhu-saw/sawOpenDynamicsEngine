@@ -66,8 +66,7 @@ if( cisst_FOUND AND ODE_FOUND )
 
     add_library( sawOpenDynamicsEngine ${SOURCE_FILES} )
 
-    # TODO: Are these flags necessary? they don't appear anywhere in the CISST/SAW source
-    # set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCISST_ODE_SUPPORT -DdDOUBLE" )
+    set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCISST_ODE_SUPPORT -DdDOUBLE" )
 
     target_link_libraries(
       sawOpenDynamicsEngine 
@@ -86,6 +85,7 @@ if( cisst_FOUND AND ODE_FOUND )
 
     set(sawOpenDynamicsEngine_LIBRARY_DIR "${LIBRARY_OUTPUT_PATH}")
     set(sawOpenDynamicsEngine_LIBRARIES sawOpenDynamicsEngine ${sawOpenSceneGraph_LIBRARIES} )
+    set(sawOpenDynamicsEngine_DEFINITIONS "-DdDOUBLE" )
 
     configure_file (
       "${CMAKE_CURRENT_SOURCE_DIR}/sawOpenDynamicsEngineConfig.cmake.in"
