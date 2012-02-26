@@ -32,10 +32,9 @@ if( cisst_FOUND_AS_REQUIRED )
   cisst_find_component( sawOpenDynamicsEngine REQUIRED )
 
   if( sawOpenDynamicsEngine_FOUND )
-    include_directories( ${sawOpenDynamicsEngine_INCLUDE_DIR} )
+    include_directories( ${sawOpenDynamicsEngine_INCLUDE_DIRS} )
     link_directories( ${sawOpenDynamicsEngine_LIBRARY_DIR} )
-    add_definitions( ${sawOpenDynamicsEngine_DEFINITIONS} )
-    set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCISST_ODE_SUPPORT" )
+    add_definitions( "${sawOpenDynamicsEngine_DEFINITIONS} -DCISST_ODE_SUPPORT" )
 
     add_executable( osaODEBodyExample           osaODEBodyExample.cpp )
     add_executable( osaODEWAMExample            osaODEWAMExample.cpp )

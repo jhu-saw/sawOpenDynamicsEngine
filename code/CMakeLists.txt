@@ -78,12 +78,13 @@ if( cisst_FOUND AND ODE_FOUND )
       ${REQUIRED_CISST_LIBRARIES} )
 
     set( 
-      sawOpenDynamicsEngine_INCLUDE_DIR 
+      sawOpenDynamicsEngine_INCLUDE_DIRS 
       ${sawComponents_SOURCE_DIR} 
       ${sawComponents_BINARY_DIR}
-      ${OpenDynamicsEngine_INCLUDE_DIRS} )
+      ${OpenDynamicsEngine_INCLUDE_DIRS}
+      ${sawOpenSceneGraph_INCLUDE_DIRS})
 
-    set(sawOpenDynamicsEngine_LIBRARY_DIR "${LIBRARY_OUTPUT_PATH}")
+    set(sawOpenDynamicsEngine_LIBRARY_DIR ${LIBRARY_OUTPUT_PATH} ${sawOpenSceneGraph_LIBRARY_DIR})
     set(sawOpenDynamicsEngine_LIBRARIES sawOpenDynamicsEngine ${sawOpenSceneGraph_LIBRARIES} )
     set(sawOpenDynamicsEngine_DEFINITIONS "-DdDOUBLE" )
 
