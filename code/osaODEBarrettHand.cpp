@@ -32,6 +32,7 @@ osaODEBarrettHand::osaODEBarrettHand( const std::string& palmmodel,
 			    vctFixedSizeVector<double,3>(0.0, 0.0, -0.025),
 			    I,                       // iniertia tensor
 			    1.0,
+			    1.0,
 			    "",
 			    (osaOSGWorld*)this );  // ODE world space
   this->base = odebase;
@@ -105,14 +106,15 @@ osaODEBarrettHand::osaODEBarrettHand( const std::string& palmmodel,
   // Create the body for the base (palm)
   osg::ref_ptr<osaODEBody> odebase = NULL;
   odebase = new osaODEBody( palmmodel,               // geometry
-			      world,                   // the world
-			      Rtwb,                    // position/orientation
-			      1.17,                    // mass
-			      vctFixedSizeVector<double,3>(0.0, 0.0, -0.025),
-			      I,                       // iniertia tensor
-			      1.0,
-			      "",
-			      (osaOSGWorld*)this );  // ODE world space
+			    world,                   // the world
+			    Rtwb,                    // position/orientation
+			    1.17,                    // mass
+			    vctFixedSizeVector<double,3>(0.0, 0.0, -0.025),
+			    I,                       // iniertia tensor
+			    1.0,
+			    1.0,
+			    "",
+			    (osaOSGWorld*)this );  // ODE world space
   this->base = odebase;
 
 

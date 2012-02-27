@@ -118,6 +118,7 @@ class CISST_EXPORT osaODEBody : public osaOSGBody {
 	      osaODEWorld* odeworld,
 	      const vctFrame4x4<double>& Rtwb,
 	      double scale = 1.0,
+	      double alpha = 1.0,
 	      const std::string& options = std::string(""),
 	      osaOSGWorld* osgworld = NULL,
 	      double simplify_ratio = 0.0 );
@@ -137,6 +138,7 @@ class CISST_EXPORT osaODEBody : public osaOSGBody {
 	      osaODEWorld* odeworld,
 	      const vctFrm3& Rtwb,
 	      double scale = 1.0,
+	      double alpha = 1.0,
 	      const std::string& options = std::string(""),
 	      osaOSGWorld* osgworld = NULL,
 	      double simplify_ratio = 0.0 );
@@ -161,6 +163,7 @@ class CISST_EXPORT osaODEBody : public osaOSGBody {
 		const vctFixedSizeVector<double,3>& com,
 		const vctFixedSizeMatrix<double,3,3>& moit,
 		double scale = 1.0,
+		double alpha = 1.0,
 		const std::string& options = std::string(""),
 		osaOSGWorld* osgworld = NULL,
 		double simplify_ratio = 0.0 );
@@ -184,6 +187,7 @@ class CISST_EXPORT osaODEBody : public osaOSGBody {
 		const vctFixedSizeVector<double,3>& tbcom,
 		const vctFixedSizeMatrix<double,3,3>& moit,
 		double scale = 1.0,
+		double alpha = 1.0,
 		const std::string& options = std::string(""),
 		osaOSGWorld* osgworld = NULL,
 		double simplify_ratio = 0.0 );
@@ -204,6 +208,7 @@ class CISST_EXPORT osaODEBody : public osaOSGBody {
 		const vctFrame4x4<double>& Rt,
 		double m,
 		double scale = 1.0,
+		double alpha = 1.0,
 		const std::string& options = std::string(""),
 		osaOSGWorld* osgworld = NULL,
 		double simplify_ratio = 0.0 );
@@ -224,6 +229,7 @@ class CISST_EXPORT osaODEBody : public osaOSGBody {
 		const vctFrm3& Rt,
 		double m,
 		double scale = 1.0,
+		double alpha = 1.0,
 		const std::string& options = std::string(""),
 		osaOSGWorld* osgworld = NULL,
 		double simplify_ratio = 0.0 );
