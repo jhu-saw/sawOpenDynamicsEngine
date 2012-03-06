@@ -1,3 +1,4 @@
+#include <cisstCommon/cmnPath.h>
 #include <cisstCommon/cmnGetChar.h>
 
 #include <cisstMultiTask/mtsTaskManager.h>
@@ -12,7 +13,7 @@
 class WAMMotion : public mtsTaskPeriodic {
 
 private:
-  
+
   mtsFunctionRead  GetPositions;
   mtsFunctionWrite SetPositions;
 
@@ -37,10 +38,10 @@ public:
   void Startup(){}
   void Run(){
     ProcessQueuedCommands();
-    
+
     prmPositionJointGet qin;
     GetPositions( qin );
-    
+
     prmPositionJointSet qout;
     qout.SetSize( 7 );
     qout.Goal() = q;
@@ -49,7 +50,7 @@ public:
     for( size_t i=0; i<q.size(); i++ ) q[i] += 0.001;
 
   }
-  
+
   void Cleanup(){}
 
 };
@@ -57,7 +58,7 @@ public:
 class BHMotion : public mtsTaskPeriodic {
 
 private:
-  
+
   mtsFunctionRead  GetPositions;
   mtsFunctionWrite SetPositions;
 
@@ -82,19 +83,19 @@ public:
   void Startup(){}
   void Run(){
     ProcessQueuedCommands();
-    
+
     prmPositionJointGet qin;
     GetPositions( qin );
-    
+
     prmPositionJointSet qout;
     qout.SetSize( 4 );
     qout.Goal() = q;
     SetPositions( qout );
-    
+
     for( size_t i=0; i<q.size(); i++ ) q[i] += 0.001;
 
   }
-  
+
   void Cleanup(){}
 
 };
@@ -116,7 +117,7 @@ int main(){
   int width = 640, height = 480;
   double Znear = 0.01, Zfar = 10.0;
   mtsOSGMono* camera;
-  camera = new mtsOSGMono( "camera", 
+  camera = new mtsOSGMono( "camera",
 			   world,
 			   x, y, width, height,
 			   55, ((double)width)/((double)height),
@@ -125,30 +126,40 @@ int main(){
 
 
   // Create objects
-  std::string wampath( CISST_SOURCE_ROOT"/etc/cisstRobot/WAM/" );
+  cmnPath wampath;
+  wampath.AddRelativeToCisstShare("/models/WAM");
+  std::string fname;
 
   // Create a rigid body. Make up some mass + com + moit
   double mass = 1.0;
   vctFixedSizeVector<double,3> com( 0.0 );
   vctFixedSizeMatrix<double,3,3> moit = vctFixedSizeMatrix<double,3,3>::Eye();
-  
-  std::string hubblepath( CISST_SOURCE_ROOT"/etc/cisstRobot/objects/" );
+
+  cmnPath hubblepath;
+  hubblepath.AddRelativeToCisstShare("/models/hubble");
   vctFixedSizeVector<double,3> u( 0.780004, 0.620257, 0.082920 );
   u.NormalizedSelf();
   vctFrame4x4<double> Rtwh( vctAxisAngleRotation3<double>( u, 0.7391 ),
 			    vctFixedSizeVector<double,3>( 0.0, 0.5, 1.0 ) );
   osg::ref_ptr<osaODEBody> hubble;
-  hubble = new osaODEBody( hubblepath+"hst.3ds", world, Rtwh, mass, com, moit );
+  hubble = new osaODEBody( hubblepath.Find("hst.3ds"), world, Rtwh, mass, com, moit );
 
 
   std::vector< std::string > wammodels;
-  wammodels.push_back( wampath + "l1.obj" );
-  wammodels.push_back( wampath + "l2.obj" );
-  wammodels.push_back( wampath + "l3.obj" );
-  wammodels.push_back( wampath + "l4.obj" );
-  wammodels.push_back( wampath + "l5.obj" );
-  wammodels.push_back( wampath + "l6.obj" );
-  wammodels.push_back( wampath + "l7.obj" );
+  fname = wampath.Find("l1.obj");
+  wammodels.push_back( fname );
+  fname = wampath.Find("l2.obj");
+  wammodels.push_back( fname );
+  fname = wampath.Find("l3.obj");
+  wammodels.push_back( fname );
+  fname = wampath.Find("l4.obj");
+  wammodels.push_back( fname );
+  fname = wampath.Find("l5.obj");
+  wammodels.push_back( fname );
+  fname = wampath.Find("l6.obj");
+  wammodels.push_back( fname );
+  fname = wampath.Find("l7.obj");
+  wammodels.push_back( fname );
 
   mtsODEManipulator* WAM;
   WAM = new mtsODEManipulator( "WAM",
@@ -158,29 +169,30 @@ int main(){
 			       wammodels,
 			       world,
 			       vctFrame4x4<double>(),
-			       wampath + "wam7.rob",
-			       wampath + "l0.obj",
+			       wampath.Find("wam7.rob"),
+			       wampath.Find("l0.obj"),
 			       vctDynamicVector<double>( 7, 0.0 ) );
   taskManager->AddComponent( WAM );
 
-  robManipulator robwam( wampath+"wam7.rob", vctFrame4x4<double>() );
-  std::string bhpath( CISST_SOURCE_ROOT"/etc/cisstRobot/BH/" );
+  robManipulator robwam( wampath.Find("wam7.rob"), vctFrame4x4<double>() );
+  cmnPath bhpath;
+  bhpath.AddRelativeToCisstShare("/models/BH");
   vctFrame4x4<double> Rtw0 = robwam.ForwardKinematics( vctDynamicVector<double>( 7, 0.0 ) );
   mtsODEBarrettHand* BH;
   BH = new mtsODEBarrettHand( "BH",
 			      0.001,
 			      OSA_CPU1,
 			      20,
-			      bhpath + "l0.obj",
-			      bhpath + "l1.obj",
-			      bhpath + "l2.obj",
-			      bhpath + "l3.obj",
+			      bhpath.Find("l0.obj"),
+			      bhpath.Find("l1.obj"),
+			      bhpath.Find("l2.obj"),
+			      bhpath.Find("l3.obj"),
 			      world,
 			      Rtw0,
-			      bhpath + "f1f2.rob",
-			      bhpath + "f3.rob" );
+			      bhpath.Find("f1f2.rob"),
+			      bhpath.Find("f3.rob") );
   taskManager->AddComponent( BH );
-  
+
   WAM->Attach( BH );
 
   WAMMotion wammotion;

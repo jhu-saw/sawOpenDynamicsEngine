@@ -1,3 +1,4 @@
+#include <cisstCommon/cmnPath.h>
 #include <sawOpenDynamicsEngine/osaODEWorld.h>
 #include <sawOpenDynamicsEngine/osaODEManipulator.h>
 #include <sawOpenSceneGraph/osaOSGMono.h>
@@ -23,38 +24,40 @@ int main(){
   camera->Initialize();
 
   // Create objects
-  std::string path( CISST_SOURCE_ROOT"/etc/cisstRobot/" );
+  cmnPath path;
+  path.AddRelativeToCisstShare("/models/WAM");
+  path.AddRelativeToCisstShare("/models/hubble");
 
   // Create a rigid body. Make up some mass + com + moit
   double mass = 1.0;
   vctFixedSizeVector<double,3> com( 0.0 );
   vctFixedSizeMatrix<double,3,3> moit = vctFixedSizeMatrix<double,3,3>::Eye();
-  
+
   vctFixedSizeVector<double,3> u( 0.780004, 0.620257, 0.082920 );
   u.NormalizedSelf();
   vctFrame4x4<double> Rtwh( vctAxisAngleRotation3<double>( u, 0.7391 ),
 			    vctFixedSizeVector<double,3>( 0.5, 0.5, 1.0 ) );
   osg::ref_ptr<osaODEBody> hubble;
-  hubble = new osaODEBody( path+"objects/hst.3ds", world, Rtwh, mass, com, moit );
+  hubble = new osaODEBody( path.Find("hst.3ds"), world, Rtwh, mass, com, moit );
 
 
   std::vector< std::string > models;
-  models.push_back( path + "WAM/l1.obj" );
-  models.push_back( path + "WAM/l2.obj" );
-  models.push_back( path + "WAM/l3.obj" );
-  models.push_back( path + "WAM/l4.obj" );
-  models.push_back( path + "WAM/l5.obj" );
-  models.push_back( path + "WAM/l6.obj" );
-  models.push_back( path + "WAM/l7.obj" );
+  models.push_back( path.Find("l1.obj") );
+  models.push_back( path.Find("l2.obj") );
+  models.push_back( path.Find("l3.obj") );
+  models.push_back( path.Find("l4.obj") );
+  models.push_back( path.Find("l5.obj") );
+  models.push_back( path.Find("l6.obj") );
+  models.push_back( path.Find("l7.obj") );
 
   osg::ref_ptr<osaODEManipulator> wam;
   wam = new osaODEManipulator( models,
 			       world,
 			       vctFrame4x4<double>(),
-			       path + "WAM/wam7.rob",
-			       path + "WAM/l0.obj",
+			       path.Find("wam7.rob"),
+			       path.Find("l0.obj"),
 			       vctDynamicVector<double>( 7, 0.0 ) );
-  
+
   std::cout << "ESC to quit" << std::endl;
 
   vctDynamicVector<double> q( 7, 0.0 );

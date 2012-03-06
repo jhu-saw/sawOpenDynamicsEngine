@@ -1,3 +1,4 @@
+#include <cisstCommon/cmnPath.h>
 #include <sawOpenSceneGraph/osaOSGMono.h>
 #include <sawOpenDynamicsEngine/osaODEWorld.h>
 #include <sawOpenDynamicsEngine/osaODEBody.h>
@@ -23,24 +24,26 @@ int main(){
   camera->Initialize();
 
   // Create objects
-  std::string data( CISST_SOURCE_ROOT"/etc/cisstRobot/objects/" );
+  cmnPath path;
+  path.AddRelativeToCisstShare("/models");
+  path.AddRelativeToCisstShare("/models/hubble");
 
   // Create a rigid body. Make up some mass + com + moit
   double mass = 1.0;
   vctFixedSizeVector<double,3> com( 0.0 );
   vctFixedSizeMatrix<double,3,3> moit = vctFixedSizeMatrix<double,3,3>::Eye();
-  
+
   vctFixedSizeVector<double,3> u( 0.780004, 0.620257, 0.082920 );
   u.NormalizedSelf();
   vctFrame4x4<double> Rtwh( vctAxisAngleRotation3<double>( u, 0.7391 ),
 			    vctFixedSizeVector<double,3>( 0.0, 0.0, 1.0 ) );
   osg::ref_ptr<osaODEBody> hubble;
-  hubble = new osaODEBody( data+"hst.3ds", world, Rtwh, mass, com, moit );
+  hubble = new osaODEBody( path.Find("hst.3ds"), world, Rtwh, mass, com, moit );
 
 
   // Create a static body. This body has no mass and cannot be moved
   osg::ref_ptr<osaODEBody> background;
-  background = new osaODEBody( data+"background.3ds", world, vctFrm3() );
+  background = new osaODEBody( path.Find("background.3ds"), world, vctFrm3() );
 
   std::cout << "ESC to quit" << std::endl;
   while( !camera->done() ){

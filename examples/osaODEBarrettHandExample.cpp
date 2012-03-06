@@ -1,3 +1,4 @@
+#include <cisstCommon/cmnPath.h>
 #include <sawOpenDynamicsEngine/osaODEWorld.h>
 #include <sawOpenSceneGraph/osaOSGMono.h>
 #include <sawOpenDynamicsEngine/osaODEBarrettHand.h>
@@ -10,7 +11,7 @@ int main(){
 
   osg::ref_ptr< osaODEWorld > world = new osaODEWorld(0.001, vctFixedSizeVector<double,3>(0.0));
 
-  
+
   // Create a camera
   int x = 0, y = 0;
   int width = 640, height = 480;
@@ -22,25 +23,26 @@ int main(){
 			     Znear, Zfar );
   camera->Initialize();
 
-  std::string path( CISST_SOURCE_ROOT"/etc/cisstRobot/BH/" );
+  cmnPath pathbh;
+  pathbh.AddRelativeToCisstShare("/models/BH");
   vctFrame4x4<double> Rtw0;
   Rtw0[2][3] = 0.1;
 
   osg::ref_ptr<osaODEBarrettHand> bh;
-  bh = new osaODEBarrettHand( path + "l0.obj",
-			      path + "l1.obj",
-			      path + "l2.obj",
-			      path + "l3.obj",
+  bh = new osaODEBarrettHand( pathbh.Find("l0.obj"),
+			      pathbh.Find("l1.obj"),
+			      pathbh.Find("l2.obj"),
+			      pathbh.Find("l3.obj"),
 			      world,
 			      Rtw0,
-			      path + "f1f2.rob",
-			      path + "f3.rob" );
-  
+			      pathbh.Find("f1f2.rob"),
+			      pathbh.Find("f3.rob") );
+
   std::cout << "ESC to quit" << std::endl;
 
   vctDynamicVector<double> q( 4, 0.0 );
   while( !camera->done() ){
-    
+
     for( size_t i=0; i<4; i++ ) q[i] += 0.001;
     bh->SetPositions( q );
     world->Step();

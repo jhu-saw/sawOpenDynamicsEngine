@@ -1,4 +1,5 @@
 #include <cisstCommon/cmnGetChar.h>
+#include <cisstCommon/cmnPath.h>
 
 #include <cisstMultiTask/mtsTaskManager.h>
 #include <cisstMultiTask/mtsTaskPeriodic.h>
@@ -11,7 +12,7 @@
 class WAMMotion : public mtsTaskPeriodic {
 
 private:
-  
+
   mtsFunctionRead  GetPositions;
   mtsFunctionWrite SetPositions;
 
@@ -19,7 +20,7 @@ private:
 
 public:
 
-  WAMMotion( double period ) : 
+  WAMMotion( double period ) :
     mtsTaskPeriodic( "WAMMotion", period, true ){
 
     q.SetSize(7);
@@ -37,10 +38,10 @@ public:
   void Startup(){}
   void Run(){
     ProcessQueuedCommands();
-    
+
     prmPositionJointGet qin;
     GetPositions( qin );
-    
+
     prmPositionJointSet qout;
     qout.SetSize( 7 );
     qout.Goal() = q;
@@ -49,7 +50,7 @@ public:
     for( size_t i=0; i<q.size(); i++ ) q[i] += 0.001;
 
   }
-  
+
   void Cleanup(){}
 
 };
@@ -78,18 +79,19 @@ int main(){
 			   Znear, Zfar );
   taskManager->AddComponent( camera );
 
-  
-  std::string path( CISST_SOURCE_ROOT"/etc/cisstRobot/WAM/" );
+
+  cmnPath path;
+  path.AddRelativeToCisstShare("/models/WAM");
   vctFrame4x4<double> Rtw0;
-  
+
   std::vector< std::string > models;
-  models.push_back( path + "l1.obj" );
-  models.push_back( path + "l2.obj" );
-  models.push_back( path + "l3.obj" );
-  models.push_back( path + "l4.obj" );
-  models.push_back( path + "l5.obj" );
-  models.push_back( path + "l6.obj" );
-  models.push_back( path + "l7.obj" );
+  models.push_back( path.Find("l1.obj") );
+  models.push_back( path.Find("l2.obj") );
+  models.push_back( path.Find("l3.obj") );
+  models.push_back( path.Find("l4.obj") );
+  models.push_back( path.Find("l5.obj") );
+  models.push_back( path.Find("l6.obj") );
+  models.push_back( path.Find("l7.obj") );
 
   mtsODEManipulator* WAM;
   WAM = new mtsODEManipulator( "WAM",
@@ -99,11 +101,11 @@ int main(){
 			       models,
 			       world,
 			       Rtw0,
-			       path + "wam7.rob",
-			       path + "l0.obj",
+			       path.Find("wam7.rob"),
+			       path.Find("l0.obj"),
 			       vctDynamicVector<double>( 7, 0.0 ) );
   taskManager->AddComponent( WAM );
-  
+
   WAMMotion motion( 0.001 );
   taskManager->AddComponent( &motion );
 

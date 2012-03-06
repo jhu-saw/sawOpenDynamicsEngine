@@ -1,21 +1,21 @@
 #
 # $Id$
 #
-# (C) Copyright 2009 Johns Hopkins University (JHU), All Rights
+# (C) Copyright 2009-2012 Johns Hopkins University (JHU), All Rights
 # Reserved.
 #
 # --- begin cisst license - do not edit ---
-# 
+#
 # This software is provided "as is" under an open source license, with
 # no warranty.  The complete license can be found in license.txt and
 # http://www.cisst.org/cisst/license.txt.
-# 
+#
 # --- end cisst license ---
 
 
 
-set( 
-  REQUIRED_CISST_LIBRARIES 
+set(
+  REQUIRED_CISST_LIBRARIES
   cisstCommon
   cisstVector
   cisstNumerical
@@ -29,7 +29,7 @@ find_package( cisst REQUIRED ${REQUIRED_CISST_LIBRARIES} )
 if( cisst_FOUND_AS_REQUIRED )
 
   include( ${CISST_USE_FILE} )
-  cisst_find_component( sawOpenDynamicsEngine REQUIRED )
+  cisst_find_component( sawOpenDynamicsEngine QUIET REQUIRED )
 
   if( sawOpenDynamicsEngine_FOUND )
     include_directories( ${sawOpenDynamicsEngine_INCLUDE_DIRS} )
@@ -45,14 +45,14 @@ if( cisst_FOUND_AS_REQUIRED )
     add_executable( mtsODEWAMBarrettHandExample mtsODEWAMBarrettHandExample.cpp )
     add_executable( mtsODEBarrettHandExample    mtsODEBarrettHandExample.cpp )
 
-    target_link_libraries( osaODEBodyExample           sawOpenDynamicsEngine ) 
-    target_link_libraries( osaODEWAMExample            sawOpenDynamicsEngine ) 
-    target_link_libraries( osaODEWAMBarrettHandExample sawOpenDynamicsEngine ) 
-    target_link_libraries( osaODEBarrettHandExample    sawOpenDynamicsEngine ) 
+    target_link_libraries( osaODEBodyExample           sawOpenDynamicsEngine )
+    target_link_libraries( osaODEWAMExample            sawOpenDynamicsEngine )
+    target_link_libraries( osaODEWAMBarrettHandExample sawOpenDynamicsEngine )
+    target_link_libraries( osaODEBarrettHandExample    sawOpenDynamicsEngine )
 
-    target_link_libraries( mtsODEWAMExample            sawOpenDynamicsEngine ) 
-    target_link_libraries( mtsODEWAMBarrettHandExample sawOpenDynamicsEngine ) 
-    target_link_libraries( mtsODEBarrettHandExample    sawOpenDynamicsEngine ) 
+    target_link_libraries( mtsODEWAMExample            sawOpenDynamicsEngine )
+    target_link_libraries( mtsODEWAMBarrettHandExample sawOpenDynamicsEngine )
+    target_link_libraries( mtsODEBarrettHandExample    sawOpenDynamicsEngine )
 
   endif( sawOpenDynamicsEngine_FOUND)
-endif( cisst_FOUND_AS_REQUIRED AND sawOpenDynamicsEngine_FOUND )
+endif( cisst_FOUND_AS_REQUIRED )

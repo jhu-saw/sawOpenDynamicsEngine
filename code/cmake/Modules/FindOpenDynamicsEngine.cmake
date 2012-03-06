@@ -12,18 +12,14 @@
 #
 # --- end cisst license ---
 
-cmake_minimum_required(VERSION 2.6.0)
-
 if (WIN32)
-  
-  find_path( ODE_INCLUDE_DIR ode/ode.h 
+
+  find_path( ODE_INCLUDE_DIR ode/ode.h
     PATHS ENV ODE_ROOT_PATH PATH_SUFFIXES include )
 
-  find_library( ODE_LIBRARY NAMES ode 
+  find_library( ODE_LIBRARY NAMES ode
     PATHS ENV ODE_ROOT_PATH PATH_SUFFIXES lib )
 
-elseif (APPLE)
-  # TODO?
 elseif (UNIX)
 
   find_path( ODE_INCLUDE_DIR ode/ode.h )
@@ -42,7 +38,7 @@ endif ()
 set( ODE_FOUND FALSE )
 
 if( ODE_INCLUDE_DIR )
-  if( ODE_LIBRARY ) 
+  if( ODE_LIBRARY )
     set( ODE_FOUND TRUE )
 
     # deprecate old variables so that we conform to standard variable naming for Find*.cmake
@@ -53,6 +49,3 @@ if( ODE_INCLUDE_DIR )
 endif()
 
 mark_as_advanced( ODE_INCLUDE_DIR ODE_LIBRARY )
-
-
-

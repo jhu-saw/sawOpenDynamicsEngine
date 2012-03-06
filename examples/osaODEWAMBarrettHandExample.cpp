@@ -1,3 +1,4 @@
+#include <cisstCommon/cmnPath.h>
 #include <sawOpenDynamicsEngine/osaODEWorld.h>
 #include <sawOpenDynamicsEngine/osaODEBarrettHand.h>
 #include <sawOpenDynamicsEngine/osaODEManipulator.h>
@@ -18,60 +19,63 @@ int main(){
   double Znear = 0.01, Zfar = 10.0;
   osg::ref_ptr<osaOSGMono> camera;
   camera = new osaOSGMono( world,
-			     x, y, width, height,
-			     55, ((double)width)/((double)height),
-			     Znear, Zfar );
+			   x, y, width, height,
+			   55, ((double)width)/((double)height),
+			   Znear, Zfar );
   camera->Initialize();
 
   // Create objects
-  std::string wampath( CISST_SOURCE_ROOT"/etc/cisstRobot/WAM/" );
+  cmnPath wampath;
+  wampath.AddRelativeToCisstShare("/models/WAM");
 
   // Create a rigid body. Make up some mass + com + moit
   double mass = 1.0;
   vctFixedSizeVector<double,3> com( 0.0 );
   vctFixedSizeMatrix<double,3,3> moit = vctFixedSizeMatrix<double,3,3>::Eye();
-  
-  std::string hubblepath( CISST_SOURCE_ROOT"/etc/cisstRobot/objects/" );
+
+  cmnPath hubblepath;
+  hubblepath.AddRelativeToCisstShare("/models/hubble");
   vctFixedSizeVector<double,3> u( 0.780004, 0.620257, 0.082920 );
   u.NormalizedSelf();
   vctFrame4x4<double> Rtwh( vctAxisAngleRotation3<double>( u, 0.7391 ),
 			    vctFixedSizeVector<double,3>( 0.5, 0.5, 1.0 ) );
   osg::ref_ptr<osaODEBody> hubble;
-  hubble = new osaODEBody( hubblepath+"hst.3ds", world, Rtwh, mass, com, moit );
+  hubble = new osaODEBody( hubblepath.Find("hst.3ds"), world, Rtwh, mass, com, moit );
 
 
   std::vector< std::string > wammodels;
-  wammodels.push_back( wampath + "l1.obj" );
-  wammodels.push_back( wampath + "l2.obj" );
-  wammodels.push_back( wampath + "l3.obj" );
-  wammodels.push_back( wampath + "l4.obj" );
-  wammodels.push_back( wampath + "l5.obj" );
-  wammodels.push_back( wampath + "l6.obj" );
-  wammodels.push_back( wampath + "l7.obj" );
+  wammodels.push_back( wampath.Find("l1.obj") );
+  wammodels.push_back( wampath.Find("l2.obj") );
+  wammodels.push_back( wampath.Find("l3.obj") );
+  wammodels.push_back( wampath.Find("l4.obj") );
+  wammodels.push_back( wampath.Find("l5.obj") );
+  wammodels.push_back( wampath.Find("l6.obj") );
+  wammodels.push_back( wampath.Find("l7.obj") );
 
   osg::ref_ptr<osaODEManipulator> wam;
   wam = new osaODEManipulator( wammodels,
 			       world,
 			       vctFrame4x4<double>(),
-			       wampath + "wam7.rob",
-			       wampath + "l0.obj",
+			       wampath.Find("wam7.rob"),
+			       wampath.Find("l0.obj"),
 			       vctDynamicVector<double>( 7, 0.0 ) );
-  
 
-  std::string bhpath( CISST_SOURCE_ROOT"/etc/cisstRobot/BH/" );
+
+  cmnPath bhpath;
+  bhpath.AddRelativeToCisstShare("/models/BH");
   vctFrame4x4<double> Rtw0 = wam->ForwardKinematics( vctDynamicVector<double>( 7, 0.0 ) );
   osg::ref_ptr<osaODEBarrettHand> bh;
-  
-  bh = new osaODEBarrettHand( bhpath + "l0.obj",
-			      bhpath + "l1.obj",
-			      bhpath + "l2.obj",
-			      bhpath + "l3.obj",
+
+  bh = new osaODEBarrettHand( bhpath.Find("l0.obj"),
+			      bhpath.Find("l1.obj"),
+			      bhpath.Find("l2.obj"),
+			      bhpath.Find("l3.obj"),
 			      world,
 			      Rtw0,
-			      bhpath + "f1f2.rob",
-			      bhpath + "f3.rob" );
+			      bhpath.Find("f1f2.rob"),
+			      bhpath.Find("f3.rob") );
   wam->Attach( bh.get() );
-  
+
   std::cout << "ESC to quit" << std::endl;
 
   vctDynamicVector<double> qwam( 7, 0.0 );
